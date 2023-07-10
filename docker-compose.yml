@@ -1,0 +1,113 @@
+version: '1.0'
+
+services:
+  server:
+    networks:
+      - weather-app
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    image: weather-server-image
+    ports:
+      - 5000:5000
+    container_name: weather_server-container
+    volumes:
+      - ./server:/app
+    environment:
+      DEV_DB_HOST: dbPostgres
+    depends_on:
+      - mqtt5
+      - influxdb
+      - dbPostgres
+
+  client:
+    networks:
+      - weather-app
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: weather-client-image
+    
+    ports:
+      - 3001:80
+    container_name: weather-client-container
+    volumes:
+      - ./client:/app
+    depends_on:
+      - server
+    
+  adminer:
+    networks:
+      - weather-app
+    image: adminer:latest
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - dbPostgres
+    
+  mqtt5:
+    networks:
+      - weather-app
+    image: eclipse-mosquitto
+    container_name: mqtt5
+    ports:
+      - "1883:1883" #default mqtt port
+      - "9001:9001" #default mqtt port for websockets
+    volumes:
+      - ./volumes/mqtt/config:/mosquitto/config:rw
+      - mqtt_data-volume:/mosquitto/data:rw
+      - mqtt_log-volume:/mosquitto/log:rw
+    
+
+  dbPostgres:
+    networks:
+      - weather-app
+    image: postgres:10
+    container_name: dbPostgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: 'shoaib'
+      POSTGRES_PASSWORD: '1234'
+      POSTGRES_DB: 'weather'
+      POSTGRES_DB_TEST: 'test' 
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_init:/docker-entrypoint-initdb.d
+    
+
+  influxdb:
+    networks:
+      - weather-app
+    image: influxdb:latest
+    container_name: influxdb
+    restart: always
+    ports:
+      - '8086:8086'
+    volumes:
+      - influx_data:/var/lib/influxdb2
+      - influx_config:/etc/influxdb2
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=shoaib
+      - DOCKER_INFLUXDB_INIT_PASSWORD=12345@asdf$
+      - DOCKER_INFLUXDB_INIT_ORG=cowlar
+      - DOCKER_INFLUXDB_INIT_BUCKET=weather
+      - DOCKER_INFLUXDB_INIT_RETENTION=1w
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=9cqw4XcMS0tACKVl8zoYQFsl4PtyxbuzxXmYtqi7TYaivKwcWCjlJ90qFHN4ejV05dhkptSJ1C5mKBVG9fkZlA==
+    
+
+# volumes for mapping data, config, and log
+volumes:
+  mqtt_data-volume:
+  mqtt_log-volume:
+  postgres_data:
+  postgres_init:
+  influx_data:
+  influx_config:
+
+networks:
+  weather-app:
+    
