@@ -157,8 +157,8 @@ import AppLogo from "@/components/Reusable/AppLogo.vue";
 import { useToast } from "vue-toastification";
 import { ref } from "vue";
 import { useRouter } from 'vue-router';
+import {toastNotification } from '../utils/toastNotification';
 
-const toast = useToast();
 
 const firstName = ref('');
 const lastName = ref('');
@@ -180,28 +180,12 @@ const isFormValid = computed(() => {
   );
 });
 
- function triggerToast(message) {
-      toast(message, {
-        position: "top-right",
-        timeout: 3000,
-        closeOnClick: true,
-        pauseOnFocusLoss: true,
-        pauseOnHover: true,
-        draggable: true,
-        draggablePercent: 0.6,
-        showCloseButtonOnHover: false,
-        hideProgressBar: true,
-        closeButton: "button",
-        icon: "fas fa-rocket",
-        rtl: false,
-      });
-    }
 
 function redirectToLogin() {
   router.push('/login');
 }
 
-function triggerToast(message) {
+function toastNotification(message) {
   // Add your toast implementation here
 }
 
@@ -219,13 +203,13 @@ async function submitForm() {
 
   if (!validateEmail(email.value)) {
     isLoading.value = false;
-    triggerToast("Invalid email address. The format should be 'example@example.com'");
+    toastNotification("Invalid email address. The format should be 'example@example.com'");
     return;
   }
 
   if (!validatePassword(password.value, confirmPassword.value)) {
     isLoading.value = false;
-    triggerToast("Passwords do not match");
+    toastNotification("Passwords do not match");
     return;
   }
 
@@ -241,16 +225,16 @@ async function submitForm() {
     });
     if (response.data) {
       isLoading.value = false;
-      triggerToast("Registration successful. You'll be redirected to the login screen.");
+      toastNotification("Registration successful. You'll be redirected to the login screen.");
       redirectToLogin();
     } else {
       isLoading.value = false;
-      triggerToast("Registration failed");
+      toastNotification("Registration failed");
     }
   } catch (err) {
     isLoading.value = false;
     console.log(err);
-    triggerToast(err.response.data.error);
+    toastNotification(err.response.data.error);
   } finally {
     isLoading.value = false;
   }

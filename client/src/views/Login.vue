@@ -80,12 +80,12 @@ import { useToast } from 'vue-toastification';
 import SubmitButton from '../components/Reusable/SubmitButton.vue';
 import AppLogo from '../components/Reusable/AppLogo.vue';
 import { userLogin } from '../services/authService';
+import {toastNotification } from '../utils/toastNotification';
 
 const email = ref('');
 const password = ref('');
 const isLoading = ref(false);
 const router = useRouter();
-const toast = useToast();
 
 const isFormValid = computed(() => {
   return email.value && password.value;
@@ -100,29 +100,13 @@ function validateEmail(email) {
   return re.test(email);
 }
 
-function triggerToast(message) {
-  toast(message, {
-    position: 'top-right',
-    timeout: 3000,
-    closeOnClick: true,
-    pauseOnFocusLoss: true,
-    pauseOnHover: true,
-    draggable: true,
-    draggablePercent: 0.6,
-    showCloseButtonOnHover: false,
-    hideProgressBar: true,
-    closeButton: 'button',
-    icon: 'fas fa-rocket',
-    rtl: false,
-  });
-}
 
 async function submitForm() {
   if (isLoading.value) return;
-  
+
   if (!validateEmail(email.value)) {
     isLoading.value = false;
-    triggerToast("Invalid email address. The format should be 'example@example.com'");
+    toastNotification("Invalid email address. The format should be 'example@example.com'");
     return;
   }
 
@@ -137,15 +121,15 @@ async function submitForm() {
       isLoading.value = false;
       const token = response.data.token;
       localStorage.setItem('token', token);
-      triggerToast("Login successful. You'll be redirected to the main weather app.");
+      toastNotification("Login successful. You'll be redirected to the main weather app.");
       router.push('/weather');
     } else {
       isLoading.value = false;
-      triggerToast('Login failed');
+      toastNotification('Login failed');
     }
   } catch (err) {
     isLoading.value = false;
-    triggerToast(err.response.data.error);
+    toastNotification(err.response.data.error);
   } finally {
     isLoading.value = false;
   }
