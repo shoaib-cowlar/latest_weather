@@ -156,203 +156,89 @@ import SubmitButton from "@/components/Reusable/SubmitButton.vue";
 import AppLogo from "@/components/Reusable/AppLogo.vue";
 import { useToast } from "vue-toastification";
 import { ref } from "vue";
+import { useRouter } from 'vue-router';
 
-export default {
-  setup() {
-    const toast = useToast();
-  //   const user = ref({
-  //     firstName: "",
-  //     lastName: "",
-  //     email: "",
-  //     password: "",
-  //     confirmPassword: "",
-  //   });
+const toast = useToast();
 
-  // const acceptTerms = ref(false);
-  // const isLoading = ref(false);
+const firstName = ref('');
+const lastName = ref('');
+const email = ref('');
+const password = ref('');
+const confirmPassword = ref('');
+const acceptTerms = ref(false);
+const isLoading = ref(false);
+const router = useRouter();
 
-  // function redirectToLogin() {
-  //     this.$router.push("/login");
-  //   };
-  // function triggerToast(message) {
-  //     this.toast(message, {
-  //       position: "top-right",
-  //       timeout: 3000,
-  //       closeOnClick: true,
-  //       pauseOnFocusLoss: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       draggablePercent: 0.6,
-  //       showCloseButtonOnHover: false,
-  //       hideProgressBar: true,
-  //       closeButton: "button",
-  //       icon: "fas fa-rocket",
-  //       rtl: false,
-  //     });
-  //   };
-  // function validateEmail(email) {
-  //     const re = /^[^@]+@[^.]+\.[cC][oO][mM]$/;
-  //     return re.test(email);
-  //   };
+const isFormValid = computed(() => {
+  return (
+    firstName.value &&
+    lastName.value &&
+    email.value &&
+    password.value &&
+    confirmPassword.value &&
+    acceptTerms.value
+  );
+});
 
-  //  function validatePassword(password, repeatedPassword) {
-  //     if (password !== repeatedPassword) {
-  //       return false;
-  //     } else {
-  //       return true;
-  //     }
-  //   };
-    return { toast };
-  },
+function redirectToLogin() {
+  router.push('/login');
+}
 
-  async function submitForm() {
-      if (this.isLoading) return; // Prevent multiple form submissions
+function triggerToast(message) {
+  // Add your toast implementation here
+}
 
-      if (!this.validateEmail(this.email)) {
-        this.isLoading = false; // Stop the loading spinner
-        this.triggerToast(
-          "Invalid email address.  The format should be 'example@example.com' ",
-        );
-        return;
-      }
-      // Check if passwords match
-      if (!this.validatePassword(this.password, this.confirmPassword)) {
-        isLoading.value = false;
-        this.triggerToast("Passwords do not match");
-        return;
-      }
-      try {
-        isLoading.value = true;
-        // Delay the execution for 2 seconds
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        const response = await userSignup({
-          firstName: this.firstName,
-          lastName: this.lastName,
-          email: this.email,
-          password: this.password,
-        });
-        if (response.data) {
-          this.isLoading = false;
-          this.triggerToast(
-            "Registration successful You'll be Redirected To Login Screen",
-          );
-          this.redirectToLogin();
-        } else {
-          this.isLoading = false;
-          this.triggerToast("Registration failed");
-        }
-      } catch (err) {
-        this.isLoading = false;
-        console.log(err);
-        this.triggerToast(err.response.data.error);
-      } finally {
-        this.isLoading = false; // Stop the loading spinner
-      }
-    };
-  components: { SubmitButton, AppLogo },
-  name: "SignUpPage",
+function validateEmail(email) {
+  const re = /^[^@]+@[^.]+\.[cC][oO][mM]$/;
+  return re.test(email);
+}
 
-  // data() {
-  //   return {
-  //     firstName: "",
-  //     lastName: "",
-  //     email: "",
-  //     password: "",
-  //     confirmPassword: "",
-  //     acceptTerms: false,
-  //     isLoading: false,
-  //   };
-  // },
-  computed: {
-    isFormValid() {
-      return (
-        this.firstName &&
-        this.lastName &&
-        this.email &&
-        this.password &&
-        this.confirmPassword &&
-        this.acceptTerms
-      );
-    },
-  },
-  methods: {
-    redirectToLogin() {
-      this.$router.push("/login");
-    },
-    triggerToast(message) {
-      this.toast(message, {
-        position: "top-right",
-        timeout: 3000,
-        closeOnClick: true,
-        pauseOnFocusLoss: true,
-        pauseOnHover: true,
-        draggable: true,
-        draggablePercent: 0.6,
-        showCloseButtonOnHover: false,
-        hideProgressBar: true,
-        closeButton: "button",
-        icon: "fas fa-rocket",
-        rtl: false,
-      });
-    },
-    validateEmail(email) {
-      const re = /^[^@]+@[^.]+\.[cC][oO][mM]$/;
-      return re.test(email);
-    },
-    validatePassword(password, repeatedPassword) {
-      if (password !== repeatedPassword) {
-        return false;
-      } else {
-        return true;
-      }
-    },
+function validatePassword(password, confirmPassword) {
+  return password === confirmPassword;
+}
 
-    async submitForm() {
-      if (this.isLoading) return; // Prevent multiple form submissions
+async function submitForm() {
+  if (isLoading.value) return;
 
-      if (!this.validateEmail(this.email)) {
-        this.isLoading = false; // Stop the loading spinner
-        this.triggerToast(
-          "Invalid email address.  The format should be 'example@example.com' ",
-        );
-        return;
-      }
-      // Check if passwords match
-      if (!this.validatePassword(this.password, this.confirmPassword)) {
-        this.isLoading = false;
-        this.triggerToast("Passwords do not match");
-        return;
-      }
-      try {
-        this.isLoading = true;
-        // Delay the execution for 2 seconds
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        const response = await userSignup({
-          firstName: this.firstName,
-          lastName: this.lastName,
-          email: this.email,
-          password: this.password,
-        });
-        if (response.data) {
-          this.isLoading = false;
-          this.triggerToast(
-            "Registration successful You'll be Redirected To Login Screen",
-          );
-          this.redirectToLogin();
-        } else {
-          this.isLoading = false;
-          this.triggerToast("Registration failed");
-        }
-      } catch (err) {
-        this.isLoading = false;
-        console.log(err);
-        this.triggerToast(err.response.data.error);
-      } finally {
-        this.isLoading = false; // Stop the loading spinner
-      }
-    },
-  },
-};
+  if (!validateEmail(email.value)) {
+    isLoading.value = false;
+    triggerToast("Invalid email address. The format should be 'example@example.com'");
+    return;
+  }
+
+  if (!validatePassword(password.value, confirmPassword.value)) {
+    isLoading.value = false;
+    triggerToast("Passwords do not match");
+    return;
+  }
+
+  try {
+    isLoading.value = true;
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    // Assuming userSignup is an async function
+    const response = await userSignup({
+      firstName: firstName.value,
+      lastName: lastName.value,
+      email: email.value,
+      password: password.value,
+    });
+    if (response.data) {
+      isLoading.value = false;
+      triggerToast("Registration successful. You'll be redirected to the login screen.");
+      redirectToLogin();
+    } else {
+      isLoading.value = false;
+      triggerToast("Registration failed");
+    }
+  } catch (err) {
+    isLoading.value = false;
+    console.log(err);
+    triggerToast(err.response.data.error);
+  } finally {
+    isLoading.value = false;
+  }
+}
+  
 </script>
 
 <style scoped></style>
