@@ -7,7 +7,7 @@ const signupUser = async (firstName, lastName, email, password) => {
     email,
     password,
   });
-  return user;
+  return ({firstName:user.firstName, lastName:user.lastName, email:user.email, id:user.id});
 };
 
 const loginUser = async (email, password) => {

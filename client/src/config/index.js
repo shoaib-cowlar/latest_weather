@@ -9,8 +9,8 @@ const mqttOptions = {
   topic: process.env.VUE_APP_MQTT_TOPIC,
 };
 
-const weatherApi = { url: process.env.VUE_APP_WEATHER_API_URL };
+const serverURL = { url: process.env.VUE_APP_BASE_URL };
 
 const imageUrl = { url: process.env.VUE_APP_IMAGE_URL };
 
-export { mqttOptions, weatherApi, imageUrl };
+export { mqttOptions, serverURL, imageUrl };

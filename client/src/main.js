@@ -1,10 +1,17 @@
 import { createApp } from "vue";
 import App from "./App.vue";
+
 import { createRouter, createWebHistory } from "vue-router";
 
 import WeatherCard from "./components/WeatherCard.vue";
 import Signup from "./components/Signup.vue";
 import Login from "./components/Login.vue";
+
+import Toast from 'vue-toastification'
+import 'vue-toastification/dist/index.css'
+
+
+import './index.css'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -15,4 +22,4 @@ const router = createRouter({
   ],
 });
 
-createApp(App).use(router).mount("#app");
+createApp(App).use(router).use(Toast).mount("#app");

@@ -3,7 +3,7 @@ const userService = require("../services/userService");
 
 exports.signupUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, password} = req.body;
+    const { firstName, lastName, email, password } = req.body;
     const existingUser = await userService.getUserByEmail(email);
     if (existingUser) {
       res.status(409).send({

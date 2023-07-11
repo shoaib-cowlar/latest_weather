@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import {client} from "../utils/mqttConnection"
+import {client} from "../utils/mqttClient"
 import {weatherApi,imageUrl} from '../config'
 import axios from "axios";
 
