@@ -54,8 +54,8 @@
               ></div>
             </div>
 
-            <submit-button v-else @click="submitForm" :disabled="!isFormValid">
-              CLogin</submit-button
+            <submit-button v-else @click="submitForm" >
+              Login</submit-button
             >
 
           
