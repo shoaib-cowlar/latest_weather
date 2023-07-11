@@ -79,4 +79,16 @@ exports.refreshAccessToken = async  (req, res)=> {
   }
 }
 
+// Logout and revoke the refresh token
+exports.logout = async(req, res) =>{
+  const { refreshToken } = req.body;
 
+  try {
+    // Find and delete the refresh token from the database
+    await Token.destroy({ where: { token: refreshToken } });
+
+    res.json({ message: 'Logout successful' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to logout' });
+  }
+}
