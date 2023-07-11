@@ -4,7 +4,7 @@ const User = require("../../models/user");
 require("@babel/register");
 
 // eslint-disable-next-line
-describe("API Tests", () => {
+describe("User Module Tests", () => {
   const mockUser = {
     firstName: "John",
     lastName: "Doe",

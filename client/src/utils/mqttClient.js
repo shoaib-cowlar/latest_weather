@@ -1,6 +1,5 @@
 import mqtt from "mqtt/dist/mqtt";
 import {mqttOptions} from "../config";
-console.log(mqttOptions)
 // MQTT broker connection options
 const brokerOptions = {
   host: mqttOptions.host,
@@ -10,8 +9,6 @@ const brokerOptions = {
   username: "shoaib",
   ssl: mqttOptions.ssl,
 };
-
-
 
 // MQTT client instance
 let client;

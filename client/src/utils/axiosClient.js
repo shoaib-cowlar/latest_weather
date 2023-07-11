@@ -12,3 +12,12 @@ export const getRequest = async (url) => {
 export const postRequest = async (url, data) => {
   return await api.post(url, data);
 };
+
+export const getRequestWithToken = async (url, token) => {
+  const response = await api.get(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
