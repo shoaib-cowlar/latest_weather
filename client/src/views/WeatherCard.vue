@@ -121,81 +121,70 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted } from 'vue';
 import { client } from "../utils/mqttClient";
 import { getWeather } from "../services/weatherService";
 import { image } from "../config";
 
-export default {
-  name: "WeatherCard",
-  props: {
-    name: String,
-  },
-  data() {
-    return {
-      city: "",
-      weatherMain: "",
-      temperature: "",
-      pressure: "",
-      humidity: "",
-      speed: "",
-      description: "",
-      image: image.url,
-      date: "",
-    };
-  },
-  methods: {
-    setData(data) {
-      this.city = data.city;
-      this.temperature = data.temperature;
-      this.humidity = data.humidity;
-      this.pressure = data.pressure;
-      this.speed = data.speed;
-      this.description = data.description;
-    },
-    
-    async getData() {
-      try {
-        const response = await getWeather();
-        const { city, temperature, speed, humidity, description, pressure } =
-          response.data;
-        this.setData({
-          city,
-          temperature,
-          speed,
-          humidity,
-          description,
-          pressure,
-        });
-      } catch (err) {
-        alert(err.response.data);
-        alert("Redirecting to Login Page");
-        this.$router.push("/login");
-      }
-    },
-  },
+const city = ref("");
+const weatherMain = ref("");
+const temperature = ref("");
+const pressure = ref("");
+const humidity = ref("");
+const speed = ref("");
+const description = ref("");
+const imageSrc = ref(image.url);
+const date = ref("");
 
-  mounted() {
-    this.date = new Date().toUTCString().slice(5, 16);
-    this.getData();
+function setData(data) {
+  city.value = data.city;
+  temperature.value = data.temperature;
+  humidity.value = data.humidity;
+  pressure.value = data.pressure;
+  speed.value = data.speed;
+  description.value = data.description;
+}
 
-    client.on("message", (topic, message) => {
-      console.log(topic);
-      const { city, temperature, speed, humidity, pressure, description } =
-        JSON.parse(message.toString());
-
-      this.setData({
-        city,
-        temperature,
-        speed,
-        humidity,
-        description,
-        pressure,
-      });
-      console.log(JSON.parse(message.toString()));
+async function getData() {
+  try {
+    const response = await getWeather();
+    const { city, temperature, speed, humidity, description, pressure } = response.data;
+    setData({
+      city,
+      temperature,
+      speed,
+      humidity,
+      description,
+      pressure,
     });
-  },
-};
+  } catch (err) {
+    alert(err.response.data);
+    alert("Redirecting to Login Page");
+    $router.push("/login");
+  }
+}
+
+onMounted(() => {
+  date.value = new Date().toUTCString().slice(5, 16);
+  getData();
+
+  client.on("message", (topic, message) => {
+    console.log(topic);
+    const { city, temperature, speed, humidity, pressure, description } =
+      JSON.parse(message.toString());
+
+    setData({
+      city,
+      temperature,
+      speed,
+      humidity,
+      description,
+      pressure,
+    });
+    console.log(JSON.parse(message.toString()));
+  });
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
