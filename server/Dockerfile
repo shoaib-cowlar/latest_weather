@@ -8,8 +8,8 @@ RUN npm install
 
 COPY . .
 
-# RUN npm run migrate
+RUN npm i -g sequelize-cli
 
 EXPOSE 5000
 
-CMD [ "npm","run","dev" ]
+CMD [ "npm","run","start" ]
