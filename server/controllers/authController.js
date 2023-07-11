@@ -1,5 +1,9 @@
 const authService = require("../services/authService");
+const { verifyRefreshToken } = require("../services/tokenServices");
 const userService = require("../services/userService");
+
+const { User } = require("../models");
+
 
 exports.signupUser = async (req, res) => {
   try {
@@ -34,9 +38,14 @@ exports.loginUser = async (request, reply) => {
         error: "User doesnt exists",
       });
     } else {
-      const authenticatedUser = await authService.loginUser(email, password);
-      const token = authenticatedUser.generateAuthToken();
-      reply.send({ user, token });
+       await authService.loginUser(email, password);
+      // const token = authenticatedUser.generateAuthToken();
+
+       // Generate access token and refresh token
+      const accessToken = generateAccessToken(user);
+      const refreshToken = generateRefreshToken(user);
+
+      reply.send({user, accessToken,refreshToken });
     }
   } catch (error) {
     console.log(error);
@@ -45,3 +54,29 @@ exports.loginUser = async (request, reply) => {
     });
   }
 };
+
+
+// Generate new access token using refresh token
+exports.refreshAccessToken = async  (req, res)=> {
+  const { refreshToken } = req.body;
+  try {
+    // Verify the refresh token
+    const decodedToken = verifyRefreshToken(refreshToken);
+
+    // Find the user in the database using the decoded token
+    const user = await User.findById(decodedToken.userId);
+
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid refresh token' });
+    }
+
+    // Generate a new access token
+    const accessToken = generateAccessToken(user);
+
+    res.json({ accessToken });
+  } catch (err) {
+    res.status(401).json({ error: 'Invalid refresh token' });
+  }
+}
+
+

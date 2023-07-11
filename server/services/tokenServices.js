@@ -5,7 +5,7 @@ const { TOKEN_SECRET, REFRESH_TOKEN_SECRET, ACCESS_TOKEN_EXPIRY, REFRESH_TOKEN_E
 // Generate an access token
 function generateAccessToken(user) {
   const payload = {
-    userId: user._id,
+    userId: user.id,
     // Add additional user data to the payload if needed
   };
 
@@ -15,7 +15,7 @@ function generateAccessToken(user) {
 // Generate a refresh token
 function generateRefreshToken(user) {
   const payload = {
-    userId: user._id,
+    userId: user.id,
     // Add additional user data to the payload if needed
   };
 
