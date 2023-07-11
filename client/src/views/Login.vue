@@ -74,8 +74,8 @@
 </template>
 
 <script>
-import SubmitButton from "./Reusable/SubmitButton.vue";
-import AppLogo from "./Reusable/AppLogo.vue";
+import SubmitButton from "../components/Reusable/SubmitButton.vue";
+import AppLogo from "../components/Reusable/AppLogo.vue";
 import { userLogin } from "../services/authService";
 import { useToast } from "vue-toastification";
 

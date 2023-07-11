@@ -1,12 +1,12 @@
 import { postRequest } from "@/utils/axiosClient";
 
 export const userSignup = async (reqBody) => {
-    const response = await postRequest(`/auth/signup`, reqBody);
+    const response = await postRequest(`/api/auth/signup`, reqBody);
     return response;
   };
 
 export const userLogin = async (reqBody) => {
-  const response = await postRequest(`/auth/login`, reqBody);
+  const response = await postRequest(`/api/auth/login`, reqBody);
   return response;
 };
 

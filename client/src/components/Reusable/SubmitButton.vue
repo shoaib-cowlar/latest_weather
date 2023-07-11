@@ -8,17 +8,15 @@
   </button>
 </template>
 
-<script>
-export default {
-  name: "SubmitButton",
-  props: {
-    disabled: {
-      type: Boolean,
-      default: false,
+<script setup>
+import { defineProps } from 'vue';
+const {disabled} = defineProps({
+    disabled :{
+        type: String,
+        default: "there"
     }
-  },
+})
 
-};
 </script>
 
 <style>

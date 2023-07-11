@@ -152,31 +152,119 @@
 
 <script>
 import { userSignup } from "../services/authService";
-import SubmitButton from "./Reusable/SubmitButton.vue";
-import AppLogo from "./Reusable/AppLogo.vue";
+import SubmitButton from "@/components/Reusable/SubmitButton.vue";
+import AppLogo from "@/components/Reusable/AppLogo.vue";
 import { useToast } from "vue-toastification";
+import { ref } from "vue";
 
 export default {
   setup() {
     const toast = useToast();
+  //   const user = ref({
+  //     firstName: "",
+  //     lastName: "",
+  //     email: "",
+  //     password: "",
+  //     confirmPassword: "",
+  //   });
+
+  // const acceptTerms = ref(false);
+  // const isLoading = ref(false);
+
+  // function redirectToLogin() {
+  //     this.$router.push("/login");
+  //   };
+  // function triggerToast(message) {
+  //     this.toast(message, {
+  //       position: "top-right",
+  //       timeout: 3000,
+  //       closeOnClick: true,
+  //       pauseOnFocusLoss: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       draggablePercent: 0.6,
+  //       showCloseButtonOnHover: false,
+  //       hideProgressBar: true,
+  //       closeButton: "button",
+  //       icon: "fas fa-rocket",
+  //       rtl: false,
+  //     });
+  //   };
+  // function validateEmail(email) {
+  //     const re = /^[^@]+@[^.]+\.[cC][oO][mM]$/;
+  //     return re.test(email);
+  //   };
+
+  //  function validatePassword(password, repeatedPassword) {
+  //     if (password !== repeatedPassword) {
+  //       return false;
+  //     } else {
+  //       return true;
+  //     }
+  //   };
     return { toast };
   },
+
+  async function submitForm() {
+      if (this.isLoading) return; // Prevent multiple form submissions
+
+      if (!this.validateEmail(this.email)) {
+        this.isLoading = false; // Stop the loading spinner
+        this.triggerToast(
+          "Invalid email address.  The format should be 'example@example.com' ",
+        );
+        return;
+      }
+      // Check if passwords match
+      if (!this.validatePassword(this.password, this.confirmPassword)) {
+        isLoading.value = false;
+        this.triggerToast("Passwords do not match");
+        return;
+      }
+      try {
+        isLoading.value = true;
+        // Delay the execution for 2 seconds
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        const response = await userSignup({
+          firstName: this.firstName,
+          lastName: this.lastName,
+          email: this.email,
+          password: this.password,
+        });
+        if (response.data) {
+          this.isLoading = false;
+          this.triggerToast(
+            "Registration successful You'll be Redirected To Login Screen",
+          );
+          this.redirectToLogin();
+        } else {
+          this.isLoading = false;
+          this.triggerToast("Registration failed");
+        }
+      } catch (err) {
+        this.isLoading = false;
+        console.log(err);
+        this.triggerToast(err.response.data.error);
+      } finally {
+        this.isLoading = false; // Stop the loading spinner
+      }
+    };
   components: { SubmitButton, AppLogo },
   name: "SignUpPage",
 
-  data() {
-    return {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      acceptTerms: false,
-      isLoading: false,
-    };
-  },
+  // data() {
+  //   return {
+  //     firstName: "",
+  //     lastName: "",
+  //     email: "",
+  //     password: "",
+  //     confirmPassword: "",
+  //     acceptTerms: false,
+  //     isLoading: false,
+  //   };
+  // },
   computed: {
-     isFormValid() {
+    isFormValid() {
       return (
         this.firstName &&
         this.lastName &&

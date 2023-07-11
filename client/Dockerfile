@@ -1,28 +1,16 @@
 # Stage 1: Build Vue Application
-FROM node:14 as build-stage
+FROM node:16-alpine 
 
 WORKDIR /app
 
 COPY package*.json ./
+
 RUN npm install
 
 COPY . .
-RUN npm run build
 
-# Stage 2: Serve Vue Application
-FROM nginx:1.21
+RUN npm install @vue/cli -g
 
-# Copy the built Vue application from the previous stage
-COPY --from=build-stage /app/dist /usr/share/nginx/html
+EXPOSE 3001
 
-# Remove the default Nginx configuration
-RUN rm /etc/nginx/conf.d/default.conf
-
-# Copy a custom Nginx configuration file
-COPY nginx.conf /etc/nginx/conf.d
-
-# Expose port 80
-EXPOSE 80
-
-# Start Nginx server
-CMD ["nginx", "-g", "daemon off;"]
+CMD [ "npm","run","serve" ]

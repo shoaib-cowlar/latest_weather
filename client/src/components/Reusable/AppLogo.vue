@@ -5,9 +5,9 @@
     </a>
 </template>
 
-<script>
+<script setup>
 
-export default{
-    name:"AppLogo"
-}
+// export default{
+//     name:"AppLogo"
+// }
 </script>
