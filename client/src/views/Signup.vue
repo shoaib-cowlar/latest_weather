@@ -154,7 +154,6 @@
 import { userSignup } from "../services/authService";
 import SubmitButton from "@/components/Reusable/SubmitButton.vue";
 import AppLogo from "@/components/Reusable/AppLogo.vue";
-import { useToast } from "vue-toastification";
 import { ref } from "vue";
 import { useRouter } from 'vue-router';
 import {toastNotification } from '../utils/toastNotification';

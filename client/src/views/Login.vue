@@ -76,7 +76,6 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useToast } from 'vue-toastification';
 import SubmitButton from '../components/Reusable/SubmitButton.vue';
 import AppLogo from '../components/Reusable/AppLogo.vue';
 import { userLogin } from '../services/authService';
