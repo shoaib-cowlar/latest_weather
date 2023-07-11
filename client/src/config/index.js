@@ -11,6 +11,6 @@ const mqttOptions = {
 
 const serverURL = { url: process.env.VUE_APP_BASE_URL };
 
-const imageUrl = { url: process.env.VUE_APP_IMAGE_URL };
+const image = { url: process.env.VUE_APP_IMAGE_URL };
 
-export { mqttOptions, serverURL, imageUrl };
+export { mqttOptions, serverURL, image };

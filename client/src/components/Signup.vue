@@ -175,7 +175,18 @@ export default {
       isLoading: false,
     };
   },
-  computed: {},
+  computed: {
+     isFormValid() {
+      return (
+        this.firstName &&
+        this.lastName &&
+        this.email &&
+        this.password &&
+        this.confirmPassword &&
+        this.acceptTerms
+      );
+    },
+  },
   methods: {
     redirectToLogin() {
       this.$router.push("/login");
@@ -196,16 +207,6 @@ export default {
         rtl: false,
       });
     },
-    isFormValid() {
-      return (
-        this.firstName &&
-        this.lastName &&
-        this.email &&
-        this.password &&
-        this.confirmPassword &&
-        this.acceptTerms
-      );
-    },
     validateEmail(email) {
       const re = /^[^@]+@[^.]+\.[cC][oO][mM]$/;
       return re.test(email);
@@ -221,14 +222,6 @@ export default {
     async submitForm() {
       if (this.isLoading) return; // Prevent multiple form submissions
 
-      // Check emppty validity
-      if (!this.isFormValid()) {
-        this.isLoading = false; // Stop the loading spinner
-        this.triggerToast("Please Fill all fields' ");
-        return;
-      }
-
-      // Check email validity
       if (!this.validateEmail(this.email)) {
         this.isLoading = false; // Stop the loading spinner
         this.triggerToast(
@@ -252,7 +245,6 @@ export default {
           email: this.email,
           password: this.password,
         });
-        console.log(response.data);
         if (response.data) {
           this.isLoading = false;
           this.triggerToast(
@@ -260,9 +252,11 @@ export default {
           );
           this.redirectToLogin();
         } else {
+          this.isLoading = false;
           this.triggerToast("Registration failed");
         }
       } catch (err) {
+        this.isLoading = false;
         console.log(err);
         this.triggerToast(err.response.data.error);
       } finally {

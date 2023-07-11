@@ -1,40 +1,130 @@
 <template>
-  <div class="card">
-    <div class="search">
-      <input type="text" placeholder="Search" class="search-bar" />
-      <button @click="getData">
-        <svg
-          stroke="currentColor"
-          fill="currentColor"
-          stroke-width="0"
-          viewBox="0 0 1024 1024"
-          height="1.5em"
-          width="1.5em"
-          xmlns="http://www.w3.org/2000/svg"
+  <div
+    class="mx-auto p-4 bg-gradient-to-b from-gray-900 to-gray-600 bg-gradient-to-r h-screen flex justify-center"
+  >
+    <div class="flex flex-wrap">
+      <div class="w-full px-2">
+        <div
+          class="transition dark:bg-black text-white relative min-w-0 break-words rounded-lg overflow-hidden shadow-sm mb-4 w-full bg-white dark:bg-gray-600"
         >
-          <path
-            d="M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.5 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.5 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6a8.2 8.2 0 0 0 11.6 0l43.6-43.5a8.2 8.2 0 0 0 0-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z"
-          ></path>
-        </svg>
-      </button>
-    </div>
-    <div class="weather loading">
-      <h2 class="city">Weather in {{ city }}</h2>
-      <h1 class="temp">{{ temp }}°C</h1>
-      <div class="flex">
-        <img v-bind:src="image" alt="" class="icon" />
-        <div class="description">{{ description }}</div>
+          <div class="px-6 py-6 relative">
+            <div class="flex mb-4 justify-between items-center">
+              <div>
+                <h5 class="mb-0 font-bold text-2xl mb-3">{{ city }}</h5>
+                <h6 class="mb-0">{{ date }}</h6>
+                <small>{{ description }}</small>
+              </div>
+              <div class="text-right">
+                <h3 class="font-bold text-4xl my-2">
+                  <span>{{ temperature }}&deg;</span>
+                </h3>
+              </div>
+            </div>
+            <div class="block sm:flex justify-between items-center flex-wrap">
+              <div class="w-full sm:w-1/2">
+                <div class="flex mb-2 justify-between items-center">
+                  <span>Pressure</span
+                  ><small class="px-2 inline-block"
+                    >{{ pressure }}</small
+                  >
+                </div>
+              </div>
+              <div class="w-full sm:w-1/2">
+                <div class="flex mb-2 justify-between items-center">
+                  <span>Speed</span
+                  ><small class="px-2 inline-block">{{speed}}</small>
+                </div>
+              </div>
+              <div class="w-full sm:w-1/2">
+                <div class="flex mb-2 justify-between items-center">
+                  <span>Temperature min</span
+                  ><small class="px-2 inline-block">{{ temperature }}&nbsp;&deg;</small>
+                </div>
+              </div>
+              <div class="w-full sm:w-1/2">
+                <div class="flex mb-2 justify-between items-center">
+                  <span>Temperature max</span
+                  ><small class="px-2 inline-block">{{ temperature }}&nbsp;&deg;</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="divider table mx-2 text-center bg-transparent whitespace-nowrap"
+          >
+            <span class="inline-block px-3"><small>Forecast</small></span>
+          </div>
+          <div class="px-6 py-6 relative">
+            <div
+              class="text-center justify-between items-center flex"
+              style="flex-flow: initial"
+            >
+              <div
+                class="text-center mb-0 flex items-center justify-center flex-col"
+              >
+                <span class="block my-1">Sun</span
+                ><img
+                  src="https://i.imgur.com/ffgW9JQ.png"
+                  class="block w-8 h-8"
+                /><span class="block my-1">38.3&deg;</span>
+              </div>
+              <div
+                class="text-center mb-0 flex items-center justify-center flex-col"
+              >
+                <span class="block my-1">Mon</span
+                ><img
+                  src="https://i.imgur.com/BQbzoKt.png"
+                  class="block w-8 h-8"
+                /><span class="block my-1">39.9&deg;</span>
+              </div>
+              <div
+                class="text-center mb-0 flex items-center justify-center flex-col"
+              >
+                <span class="block my-1">Mon</span
+                ><img
+                  src="https://i.imgur.com/BQbzoKt.png"
+                  class="block w-8 h-8"
+                /><span class="block my-1">40.1&deg;</span>
+              </div>
+              <div
+                class="text-center mb-0 flex items-center justify-center flex-col"
+              >
+                <span class="block my-1">Mon</span
+                ><img
+                  src="https://i.imgur.com/ffgW9JQ.png"
+                  class="block w-8 h-8"
+                /><span class="block my-1">41.5&deg;</span>
+              </div>
+              <div
+                class="text-center mb-0 flex items-center justify-center flex-col"
+              >
+                <span class="block my-1">Mon</span
+                ><img
+                  src="https://i.imgur.com/ffgW9JQ.png"
+                  class="block w-8 h-8"
+                /><span class="block my-1">40.1&deg;</span>
+              </div>
+              <div
+                class="text-center mb-0 flex items-center justify-center flex-col"
+              >
+                <span class="block my-1">Mon</span
+                ><img
+                  src="https://i.imgur.com/BQbzoKt.png"
+                  class="block w-8 h-8"
+                /><span class="block my-1">38&deg;</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="humidity">Humidity: {{ humidity }}%</div>
-      <div class="wind">Wind speed: {{ speed }} km/h</div>
     </div>
   </div>
 </template>
 
 <script>
-import {client} from "../utils/mqttClient"
-import {weatherApi,imageUrl} from '../config'
-import axios from "axios";
+import { client } from "../utils/mqttClient";
+import { getWeather } from "../services/weatherService";
+import { image } from "../config";
 
 export default {
   name: "WeatherCard",
@@ -45,30 +135,38 @@ export default {
     return {
       city: "",
       weatherMain: "",
-      temp: "",
+      temperature: "",
       pressure: "",
       humidity: "",
       speed: "",
       description: "",
-      image: imageUrl.url,
+      image: image.url,
+      date: "",
     };
   },
   methods: {
+    setData(data) {
+      this.city = data.city;
+      this.temperature = data.temperature;
+      this.humidity = data.humidity;
+      this.pressure = data.pressure;
+      this.speed = data.speed;
+      this.description = data.description;
+    },
+    
     async getData() {
       try {
-        const response = await axios.get(`${weatherApi.url}/weather`);
-        const {
+        const response = await getWeather();
+        const { city, temperature, speed, humidity, description, pressure } =
+          response.data;
+        this.setData({
           city,
-          temperature: temp,
+          temperature,
           speed,
           humidity,
           description,
-        } = response.data;
-        this.city = city;
-        this.temp = temp;
-        this.humidity = humidity;
-        this.speed = speed;
-        this.description = description;
+          pressure,
+        });
       } catch (err) {
         alert(err.response.data);
         alert("Redirecting to Login Page");
@@ -76,19 +174,24 @@ export default {
       }
     },
   },
+
   mounted() {
+    this.date = new Date().toUTCString().slice(5, 16);
     this.getData();
 
     client.on("message", (topic, message) => {
       console.log(topic);
-      const { city, temp, speed, humidity, description } = JSON.parse(
-        message.toString(),
-      );
-      this.city = city;
-      this.temp = temp;
-      this.humidity = humidity;
-      this.speed = speed;
-      this.description = description;
+      const { city, temperature, speed, humidity, pressure, description } =
+        JSON.parse(message.toString());
+
+      this.setData({
+        city,
+        temperature,
+        speed,
+        humidity,
+        description,
+        pressure,
+      });
       console.log(JSON.parse(message.toString()));
     });
   },

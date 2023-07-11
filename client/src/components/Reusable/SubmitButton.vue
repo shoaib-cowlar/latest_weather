@@ -14,18 +14,10 @@ export default {
   props: {
     disabled: {
       type: Boolean,
-      default: true,
+      default: false,
     }
   },
-    data(){
-        return {
-            // disabled :true,
-        }
-    },
 
-  mounted(){
-    console.log(this.disabled)
-  }
 };
 </script>
 

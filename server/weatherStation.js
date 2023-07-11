@@ -3,14 +3,14 @@ const { publishWeatherData } = require("./utils/mqttConnection");
 const fetchWeatherAndPublish = async (topic) => {
   try {
 
-    const city = 'islamabad'
+    const city = 'Islamabad'
     const description = 'Cloudy Weather'
 
     function generateRandomValue(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
     
-    const temp = generateRandomValue(-20, 40);
+    const temperature = generateRandomValue(-20, 40);
     
     const humidity = generateRandomValue(0, 100);
     
@@ -21,7 +21,7 @@ const fetchWeatherAndPublish = async (topic) => {
 
     const weatherData = {
       city,
-      temp,
+      temperature,
       humidity,
       speed,
       description,

@@ -1,5 +1,5 @@
 <template>
-   <section class="bg-gray-50 dark:bg-gray-900">
+  <section class="bg-gray-50 dark:bg-gray-900 -mt-20">
     <div
       class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
     >
@@ -11,10 +11,9 @@
           <h1
             class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
           >
-          Login to Your <Acronym></Acronym>ccount
+            Login to Your Account
           </h1>
           <form class="space-y-4 md:space-y-6" @submit.prevent="">
-           
             <div>
               <label
                 for="email"
@@ -54,11 +53,9 @@
               ></div>
             </div>
 
-            <submit-button v-else @click="submitForm" >
+            <submit-button v-else @click="submitForm" :disabled="!isFormValid">
               Login</submit-button
             >
-
-          
 
             <p class="text-sm font-light text-gray-500 dark:text-gray-400">
               Dont have an account?
@@ -77,105 +74,88 @@
 </template>
 
 <script>
-import axios from "axios";
-import { weatherApi } from "../config";
 import SubmitButton from "./Reusable/SubmitButton.vue";
 import AppLogo from "./Reusable/AppLogo.vue";
+import { userLogin } from "../services/authService";
+import { useToast } from "vue-toastification";
+
 export default {
-    components: { SubmitButton, AppLogo },
-  name: "LoginPage",
-  props: {
-    name: String,
+  setup() {
+    const toast = useToast();
+    return { toast };
   },
+  components: { SubmitButton, AppLogo },
+  name: "LoginPage",
   data() {
     return {
       email: "",
       password: "",
+      isLoading: false,
     };
   },
+  computed: {
+    isFormValid() {
+      return this.email && this.password;
+    },
+  },
+  mounted() {
+    console.log(this.isFormValid);
+  },
   methods: {
-     redirectToSignup() {
+    redirectToSignup() {
       this.$router.push("/signup");
     },
+    clearData() {
+      this.email = "";
+      this.password = "";
+    },
+    triggerToast(message) {
+      this.toast(message, {
+        position: "top-right",
+        timeout: 3000,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+        draggable: true,
+        draggablePercent: 0.6,
+        showCloseButtonOnHover: false,
+        hideProgressBar: true,
+        closeButton: "button",
+        icon: "fas fa-rocket",
+        rtl: false,
+      });
+    },
     async submitForm() {
+      if (this.isLoading) return; // Prevent multiple form submissions
       try {
-        const response = await axios.post(`${weatherApi}/auth/login`, {
+        this.isLoading = true;
+        // Delay the execution for 2 seconds
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        const response = await userLogin({
           email: this.email,
           password: this.password,
         });
         if (response.data) {
+          this.isLoading = false;
           const token = response.data.token;
           // Save the token in local storage or as a cookie
           localStorage.setItem("token", token);
-          alert("Login successful You'll be Redirected to Main Weather App");
+          this.triggerToast(
+            "Login successful You'll be Redirected to Main Weather App",
+          );
 
           this.$router.push("/weather");
         } else {
-          alert("Login failed");
+          this.isLoading = false;
+          this.triggerToast("Login failed");
         }
       } catch (err) {
-        alert(err.response.data.error);
+        this.isLoading = false;
+        this.triggerToast(err.response.data.error);
+      } finally {
+        this.isLoading = false;
       }
     },
   },
 };
 </script>
-
-<style scoped>
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group > label {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 8px;
-}
-
-.form-group > input {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 10px;
-  background-color: #f0f0f0;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-}
-
-.form-group > input:focus {
-  outline: none;
-  background-color: #e0e0e0;
-}
-
-.card {
-  background-color: #000;
-  color: #fff;
-  padding: 2em;
-  width: 100%;
-  max-width: 420px;
-  margin: 1em;
-  border-radius: 30px;
-}
-
-button {
-  background-color: #08a308;
-  color: white;
-  border-radius: 10px;
-  width: 100%;
-  margin-top: 20px;
-  padding: 10px;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background: #14641f;
-}
-
-h1.temp {
-  margin: 0;
-  margin-bottom: 0.4em;
-}
-</style>
