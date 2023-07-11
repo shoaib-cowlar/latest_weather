@@ -1,7 +1,7 @@
 import { getRequest } from "@/utils/axiosClient";
 
 export const getWeather = async () => {
-    const response = await getRequest(`/weather`);
+    const response = await getRequest(`/api/weather`);
     return response;
   };
 

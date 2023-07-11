@@ -1,5 +1,5 @@
 # Stage 1: Build Vue Application
-FROM node:14 as build-stage
+FROM node:16-alpine as build-stage
 
 WORKDIR /app
 

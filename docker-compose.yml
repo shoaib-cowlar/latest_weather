@@ -14,7 +14,7 @@ services:
     volumes:
       - ./server:/app
     env_file:
-      - .env
+      - ./env/.env
     environment:
       DEV_DB_HOST: dbPostgres
       TEST_DB_HOST: dbPostgres
@@ -30,7 +30,6 @@ services:
       context: ./client
       dockerfile: Dockerfile
     image: weather-client-image
-
     ports:
       - 3001:80
     container_name: weather-client-container
@@ -40,8 +39,10 @@ services:
       - server
     depends_on:
       - server
+    environment:
+      VUE_APP_BASE_URL: server
     env_file:
-      - client.env
+      - ./env/client.env
 
   adminer:
     networks:
@@ -75,7 +76,7 @@ services:
     ports:
       - 5432:5432
     env_file:
-      - .env
+      - ./env/.env
     environment:
       - POSTGRES_USER=${DEV_DB_USER}
       - POSTGRES_PASSWORD=${DEV_DB_PASS}
@@ -97,7 +98,7 @@ services:
       - influx_data:/var/lib/influxdb2
       - influx_config:/etc/influxdb2
     env_file:
-      - .env
+      - ./env/.env
     environment:
       - DOCKER_INFLUXDB_INIT_MODE=setup
       - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUX_USERNAME}
