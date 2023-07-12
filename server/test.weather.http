@@ -1,4 +1,2 @@
 ### Get Weather Data
 GET  http://localhost:5000/api/weather HTTP/1.2
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3ROYW1lIjoiSm9obiIsImxhc3ROYW1lIjoiRG9lIiwiZW1haWwiOiJqb2huZG9lQGV4YW1wbGUuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2ODg5OTU3MzIsImV4cCI6MTY4OTYwMDUzMn0.14JJn8veGCbezFBbRWHG22zTtQlumBVjA33WUbX72zs
