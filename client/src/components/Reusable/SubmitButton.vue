@@ -10,10 +10,11 @@
 
 <script setup>
 import { defineProps } from 'vue';
+// eslint-disable-next-line
 const {disabled} = defineProps({
     disabled :{
-        type: String,
-        default: "there"
+        type: Boolean,
+        default: false
     }
 })
 

@@ -1,8 +1,8 @@
 const authService = require("../services/authService");
-const { verifyRefreshToken } = require("../services/tokenServices");
+const { verifyRefreshToken, generateAccessToken, generateRefreshToken } = require("../services/tokenServices");
 const userService = require("../services/userService");
 
-const { User } = require("../models");
+const { Token} = require("../models");
 
 
 exports.signupUser = async (req, res) => {
@@ -43,7 +43,8 @@ exports.loginUser = async (request, reply) => {
 
        // Generate access token and refresh token
       const accessToken = generateAccessToken(user);
-      const refreshToken = generateRefreshToken(user);
+      const refreshToken = await generateRefreshToken(user);
+
 
       reply.send({user, accessToken,refreshToken });
     }
@@ -60,11 +61,8 @@ exports.loginUser = async (request, reply) => {
 exports.refreshAccessToken = async  (req, res)=> {
   const { refreshToken } = req.body;
   try {
-    // Verify the refresh token
-    const decodedToken = verifyRefreshToken(refreshToken);
-
-    // Find the user in the database using the decoded token
-    const user = await User.findById(decodedToken.userId);
+   // Verify the refresh token and retrieve the associated user
+   const user = await verifyRefreshToken(refreshToken);
 
     if (!user) {
       return res.status(401).json({ error: 'Invalid refresh token' });
@@ -82,6 +80,7 @@ exports.refreshAccessToken = async  (req, res)=> {
 // Logout and revoke the refresh token
 exports.logout = async(req, res) =>{
   const { refreshToken } = req.body;
+  console.log(refreshToken);
 
   try {
     // Find and delete the refresh token from the database
@@ -89,6 +88,7 @@ exports.logout = async(req, res) =>{
 
     res.json({ message: 'Logout successful' });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: 'Failed to logout' });
   }
 }

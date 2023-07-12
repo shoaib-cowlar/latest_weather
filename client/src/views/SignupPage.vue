@@ -3,7 +3,6 @@
     <div
       class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
     >
-      <app-logo />
       <div
         class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
       >
@@ -125,8 +124,8 @@
               ></div>
             </div>
 
-            <submit-button v-else @click="submitForm" :disabled="!isFormValid">
-              Create account</submit-button
+            <SubmitButton v-else @click="submitForm" :disabled="!isFormValid">
+              Create account</SubmitButton
             >
 
             <!-- Error message -->
@@ -150,13 +149,12 @@
   </section>
 </template>
 
-<script>
+<script setup>
 import { userSignup } from "../services/authService";
-import SubmitButton from "@/components/Reusable/SubmitButton.vue";
-import AppLogo from "@/components/Reusable/AppLogo.vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from 'vue-router';
 import {toastNotification } from '../utils/toastNotification';
+import SubmitButton from '../components/Reusable/SubmitButton.vue'
 
 
 const firstName = ref('');
@@ -168,6 +166,7 @@ const acceptTerms = ref(false);
 const isLoading = ref(false);
 const router = useRouter();
 
+// eslint-disable-next-line
 const isFormValid = computed(() => {
   return (
     firstName.value &&
@@ -184,9 +183,6 @@ function redirectToLogin() {
   router.push('/login');
 }
 
-function toastNotification(message) {
-  // Add your toast implementation here
-}
 
 function validateEmail(email) {
   const re = /^[^@]+@[^.]+\.[cC][oO][mM]$/;
@@ -196,7 +192,7 @@ function validateEmail(email) {
 function validatePassword(password, confirmPassword) {
   return password === confirmPassword;
 }
-
+// eslint-disable-next-line
 async function submitForm() {
   if (isLoading.value) return;
 
@@ -241,4 +237,3 @@ async function submitForm() {
 
 </script>
 
-<style scoped></style>

@@ -11,7 +11,7 @@ const privateRoutes = require("./routes/privateRoutes");
 const fetchWeatherAndPublish = require("./weatherStation");
 const { connectMqttClient, subscribeTopic } = require("./utils/mqttConnection");
 
-const { port : PORT } = require("./config");
+const { port : PORT, weatherApi } = require("./config");
 const cors = require("cors");
 
 
@@ -38,7 +38,7 @@ app.listen(port, () => {
   subscribeTopic(topic, 0);
   // Publish Weather at regular intervals (e.g., every 1 hour)
   setInterval(async () => {
-    await fetchWeatherAndPublish( topic);
+    await fetchWeatherAndPublish(weatherApi, topic);
   }, 5000); // 5000 milliseconds = 5 seconds
 });
 

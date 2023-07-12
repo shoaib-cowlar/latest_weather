@@ -3,7 +3,6 @@
     <div
       class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
     >
-      <app-logo />
       <div
         class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
       >
@@ -74,10 +73,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import SubmitButton from '../components/Reusable/SubmitButton.vue';
-import AppLogo from '../components/Reusable/AppLogo.vue';
 import { userLogin } from '../services/authService';
 import {toastNotification } from '../utils/toastNotification';
 
@@ -118,9 +116,7 @@ async function submitForm() {
     });
     if (response.data) {
       isLoading.value = false;
-      const token = response.data.token;
-      localStorage.setItem('token', token);
-      toastNotification("Login successful. You'll be redirected to the main weather app.");
+      
       router.push('/weather');
     } else {
       isLoading.value = false;
@@ -134,3 +130,4 @@ async function submitForm() {
   }
 }
 </script>
+
