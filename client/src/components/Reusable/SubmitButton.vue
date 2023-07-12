@@ -1,7 +1,7 @@
 <template>
   <button
     type="submit"
-    :class="['custom-button', { 'disabled': disabled }]"
+    :class="['custom-button', { disabled: disabled }]"
     :disabled="disabled"
   >
     <slot></slot>
@@ -10,13 +10,12 @@
 
 <script setup>
 // eslint-disable-next-line
-const {disabled} = defineProps({
-    disabled :{
-        type: Boolean,
-        default: false
-    }
-})
-
+const { disabled } = defineProps({
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+});
 </script>
 
 <style>

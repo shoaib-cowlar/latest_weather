@@ -10,11 +10,11 @@
         <div class="w-full px-2">
           <div class="hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.7)]">
             <div
-              class="relative transition text-white relative min-w-0 break-words rounded-lg overflow-hidden shadow-sm mb-4 w-full  "
+              class="relative transition text-white relative min-w-0 break-words rounded-lg overflow-hidden shadow-sm mb-4 w-full"
             >
-          <div
-        class="absolute inset-0 bg-gradient-to-r from-gray-700 via-gray-900 to-black opacity-20"
-      ></div>
+              <div
+                class="absolute inset-0 bg-gradient-to-r from-gray-700 via-gray-900 to-black opacity-20"
+              ></div>
               <div class="px-6 py-6 relative">
                 <div class="flex mb-4 justify-between items-center">
                   <div>

@@ -73,14 +73,14 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
-import { useRouter } from 'vue-router';
-import SubmitButton from '../components/Reusable/SubmitButton.vue';
-import { userLogin } from '../services/authService';
-import {toastNotification } from '../utils/toastNotification';
+import { computed, ref } from "vue";
+import { useRouter } from "vue-router";
+import SubmitButton from "../components/Reusable/SubmitButton.vue";
+import { userLogin } from "../services/authService";
+import { toastNotification } from "../utils/toastNotification";
 
-const email = ref('');
-const password = ref('');
+const email = ref("");
+const password = ref("");
 const isLoading = ref(false);
 const router = useRouter();
 
@@ -89,7 +89,7 @@ const isFormValid = computed(() => {
 });
 
 function redirectToSignup() {
-  router.push('/signup');
+  router.push("/signup");
 }
 
 function validateEmail(email) {
@@ -97,13 +97,14 @@ function validateEmail(email) {
   return re.test(email);
 }
 
-
 async function submitForm() {
   if (isLoading.value) return;
 
   if (!validateEmail(email.value)) {
     isLoading.value = false;
-    toastNotification("Invalid email address. The format should be 'example@example.com'");
+    toastNotification(
+      "Invalid email address. The format should be 'example@example.com'",
+    );
     return;
   }
 
@@ -116,11 +117,11 @@ async function submitForm() {
     });
     if (response.data) {
       isLoading.value = false;
-      
-      router.push('/weather');
+
+      router.push("/weather");
     } else {
       isLoading.value = false;
-      toastNotification('Login failed');
+      toastNotification("Login failed");
     }
   } catch (err) {
     isLoading.value = false;
@@ -130,4 +131,3 @@ async function submitForm() {
   }
 }
 </script>
-

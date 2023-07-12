@@ -18,9 +18,8 @@ api.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
-
 
 // Add response interceptor
 api.interceptors.response.use(
@@ -30,7 +29,12 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response && error.response.status === 401 && originalRequest && !originalRequest._retry) {
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      originalRequest &&
+      !originalRequest._retry
+    ) {
       const refreshToken = getRefreshToken();
 
       if (refreshToken) {
@@ -51,10 +55,8 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
-
-
 
 export const getRequest = async (url) => {
   return await api.get(url);
@@ -64,10 +66,11 @@ export const postRequest = async (url, data) => {
   return await api.post(url, data);
 };
 
-
-export const postRequestRefreshToken = async (url = "/api/auth/refresh-token") => {
+export const postRequestRefreshToken = async (
+  url = "/api/auth/refresh-token",
+) => {
   const token = getRefreshToken();
   const response = await api.post(url, { refreshToken: token });
-  setAccessToken(response.data.accessToken)
+  setAccessToken(response.data.accessToken);
   return response.data;
 };

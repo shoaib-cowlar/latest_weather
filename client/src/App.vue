@@ -1,12 +1,10 @@
 <template>
-
-    <router-view></router-view>
- 
+  <router-view></router-view>
 </template>
 
 <script>
-import { connectMqttClient, subscribeTopic } from "./utils/mqttClient"
-import {mqttOptions }from './config'
+import { connectMqttClient, subscribeTopic } from "./utils/mqttClient";
+import { mqttOptions } from "./config";
 
 export default {
   name: "App",

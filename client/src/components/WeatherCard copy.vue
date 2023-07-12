@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import {client} from "../utils/mqttClient"
-import {weatherApi,imageUrl} from '../config'
+import { client } from "../utils/mqttClient";
+import { weatherApi, imageUrl } from "../config";
 import axios from "axios";
 
 export default {

@@ -1,4 +1,3 @@
-
 const mqttOptions = {
   host: process.env.VUE_APP_MQTT_HOST,
   port: process.env.VUE_APP_MQTT_PORT,

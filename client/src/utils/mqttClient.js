@@ -1,5 +1,5 @@
 import mqtt from "mqtt/dist/mqtt";
-import {mqttOptions} from "../config";
+import { mqttOptions } from "../config";
 // MQTT broker connection options
 const brokerOptions = {
   host: mqttOptions.host,
@@ -26,9 +26,9 @@ const subscribeTopic = (topic, qos) => {
 
 // Connect to MQTT broker and handle events
 const connectMqttClient = () => {
-  const address = `${brokerOptions.ssl ? "ws" : "ws"}://${
-    brokerOptions.host
-  }:${brokerOptions.port}`;
+  const address = `${brokerOptions.ssl ? "ws" : "ws"}://${brokerOptions.host}:${
+    brokerOptions.port
+  }`;
   console.log(`Connecting to MQTT broker on ${address}`);
   client = mqtt.connect(address, brokerOptions);
 
@@ -51,9 +51,4 @@ const disconnectMqttClient = () => {
   }
 };
 
-export {
-  connectMqttClient,
-  disconnectMqttClient,
-  subscribeTopic,
-  client,
-};
+export { connectMqttClient, disconnectMqttClient, subscribeTopic, client };

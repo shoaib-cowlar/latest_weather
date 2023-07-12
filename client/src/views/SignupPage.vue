@@ -152,16 +152,15 @@
 <script setup>
 import { userSignup } from "../services/authService";
 import { computed, ref } from "vue";
-import { useRouter } from 'vue-router';
-import {toastNotification } from '../utils/toastNotification';
-import SubmitButton from '../components/Reusable/SubmitButton.vue'
+import { useRouter } from "vue-router";
+import { toastNotification } from "../utils/toastNotification";
+import SubmitButton from "../components/Reusable/SubmitButton.vue";
 
-
-const firstName = ref('');
-const lastName = ref('');
-const email = ref('');
-const password = ref('');
-const confirmPassword = ref('');
+const firstName = ref("");
+const lastName = ref("");
+const email = ref("");
+const password = ref("");
+const confirmPassword = ref("");
 const acceptTerms = ref(false);
 const isLoading = ref(false);
 const router = useRouter();
@@ -178,11 +177,9 @@ const isFormValid = computed(() => {
   );
 });
 
-
 function redirectToLogin() {
-  router.push('/login');
+  router.push("/login");
 }
-
 
 function validateEmail(email) {
   const re = /^[^@]+@[^.]+\.[cC][oO][mM]$/;
@@ -198,7 +195,9 @@ async function submitForm() {
 
   if (!validateEmail(email.value)) {
     isLoading.value = false;
-    toastNotification("Invalid email address. The format should be 'example@example.com'");
+    toastNotification(
+      "Invalid email address. The format should be 'example@example.com'",
+    );
     return;
   }
 
@@ -220,7 +219,9 @@ async function submitForm() {
     });
     if (response.data) {
       isLoading.value = false;
-      toastNotification("Registration successful. You'll be redirected to the login screen.");
+      toastNotification(
+        "Registration successful. You'll be redirected to the login screen.",
+      );
       redirectToLogin();
     } else {
       isLoading.value = false;
@@ -234,6 +235,4 @@ async function submitForm() {
     isLoading.value = false;
   }
 }
-
 </script>
-
