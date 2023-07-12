@@ -4,6 +4,6 @@ const authMiddleware = require("../middleware/auth");
 
 const { getAdmin } = require("../controllers/privateController");
 
-router.get("/",authMiddleware, getAdmin);
+router.get("/", authMiddleware, getAdmin);
 
 module.exports = router;
