@@ -74,7 +74,7 @@ const publishWeatherData = (topic, data) => {
       if (error) {
         console.log("Failed to publish weather data:", error);
       } else {
-        console.log("Weather data published successfully");
+        console.log("Weather data published successfully" ,payload);
       }
     });
   }

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start":"sequelize-cli db:migrate && node server",
+    "start":"sequelize-cli db:migrate && nodemon server",
     "migrate": "sequelize-cli db:migrate",
     "dev": "nodemon server",
     "test": "jest",

@@ -4,8 +4,18 @@ require("dotenv").config();
 
 function storeWeatherData(weatherData) {
   try {
-    const { city, icon, description, temperature, pressure, humidity, speed } =
-      weatherData;
+    const {
+      city,
+      icon,
+      description,
+      temperature,
+      pressure,
+      humidity,
+      speed,
+      feels_like,
+      temp_min,
+      temp_max,
+    } = weatherData;
     const data = {
       measurement: "weather",
       fields: {
@@ -14,6 +24,9 @@ function storeWeatherData(weatherData) {
         description: description,
         pressure: pressure,
         speed: speed,
+        feels_like: feels_like,
+        temp_min: temp_min,
+        temp_max: temp_max,
         icon: icon,
       },
       tags: {

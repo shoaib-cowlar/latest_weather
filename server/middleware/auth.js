@@ -1,4 +1,5 @@
-const jwt = require("jsonwebtoken");
+const { User } = require('../models');
+const { verifyAccessToken } = require("../services/tokenServices");
 
 const authMiddleware = async (req, res, next) => {
   if (
@@ -6,20 +7,22 @@ const authMiddleware = async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     try {
-      const token = req.headers.authorization.split(" ")[1];
-      if (!token) {
+      const accessToken = req.headers.authorization.split(" ")[1];
+      if (!accessToken) {
         return res
           .status(401)
           .json({ message: "Permission Denied ! No Token Found" });
       }
-      const decoded = await jwt.verify(token, process.env.JWT_SECRET);
-      // Attach the decoded token to the request object
-      req.user = decoded;
+      const decodedToken = verifyAccessToken(accessToken);
+      // decoded token will have payload which have userId so directly access to userID
+
+      // Attach the user to the request object for further use
+      req.user = await User.findByPk(decodedToken.userId);
       next();
     } catch (error) {
       console.log(error);
-      res.status(401);
-      throw new Error("Not authorized, token failed");
+      return res.status(401).json("Not authorized, token failed");
+      // throw new Error("Not authorized, token failed");
     }
   } else {
     res.status(401).json("Not authorized, token failed");

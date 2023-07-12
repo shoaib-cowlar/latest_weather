@@ -2,6 +2,8 @@ require("dotenv").config();
 
 //PORT
 const port = process.env.TEST_PORT || process.env.PORT || 5000;
+//Weather Api
+const weatherApi = process.env.WEATHER_API;
 
 // JWT credentials
 const jwtCredentials = {
@@ -26,4 +28,4 @@ const mqttOptions = {
     ssl: process.env.MQTT_SSL,
   };
 
-module.exports = { influx, jwtCredentials, port, mqttOptions }; 
+module.exports = { influx, jwtCredentials, port, mqttOptions,weatherApi }; 

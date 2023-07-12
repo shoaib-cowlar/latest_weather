@@ -7,7 +7,6 @@ exports.queryData = async (query) => {
     for await (const { values, tableMeta } of queryApi.iterateRows(query)) {
       result = tableMeta.toObject(values);
     }
-    console.log("After ");
     return result;
   } catch (error) {
     // Logging Errors on Console

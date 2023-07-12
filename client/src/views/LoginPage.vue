@@ -3,7 +3,6 @@
     <div
       class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
     >
-      <app-logo />
       <div
         class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
       >
@@ -73,89 +72,62 @@
   </section>
 </template>
 
-<script>
-import SubmitButton from "../components/Reusable/SubmitButton.vue";
-import AppLogo from "../components/Reusable/AppLogo.vue";
-import { userLogin } from "../services/authService";
-import { useToast } from "vue-toastification";
+<script setup>
+import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import SubmitButton from '../components/Reusable/SubmitButton.vue';
+import { userLogin } from '../services/authService';
+import {toastNotification } from '../utils/toastNotification';
 
-export default {
-  setup() {
-    const toast = useToast();
-    return { toast };
-  },
-  components: { SubmitButton, AppLogo },
-  name: "LoginPage",
-  data() {
-    return {
-      email: "",
-      password: "",
-      isLoading: false,
-    };
-  },
-  computed: {
-    isFormValid() {
-      return this.email && this.password;
-    },
-  },
-  mounted() {
-    console.log(this.isFormValid);
-  },
-  methods: {
-    redirectToSignup() {
-      this.$router.push("/signup");
-    },
-    clearData() {
-      this.email = "";
-      this.password = "";
-    },
-    triggerToast(message) {
-      this.toast(message, {
-        position: "top-right",
-        timeout: 3000,
-        closeOnClick: true,
-        pauseOnFocusLoss: true,
-        pauseOnHover: true,
-        draggable: true,
-        draggablePercent: 0.6,
-        showCloseButtonOnHover: false,
-        hideProgressBar: true,
-        closeButton: "button",
-        icon: "fas fa-rocket",
-        rtl: false,
-      });
-    },
-    async submitForm() {
-      if (this.isLoading) return; // Prevent multiple form submissions
-      try {
-        this.isLoading = true;
-        // Delay the execution for 2 seconds
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        const response = await userLogin({
-          email: this.email,
-          password: this.password,
-        });
-        if (response.data) {
-          this.isLoading = false;
-          const token = response.data.token;
-          // Save the token in local storage or as a cookie
-          localStorage.setItem("token", token);
-          this.triggerToast(
-            "Login successful You'll be Redirected to Main Weather App",
-          );
+const email = ref('');
+const password = ref('');
+const isLoading = ref(false);
+const router = useRouter();
 
-          this.$router.push("/weather");
-        } else {
-          this.isLoading = false;
-          this.triggerToast("Login failed");
-        }
-      } catch (err) {
-        this.isLoading = false;
-        this.triggerToast(err.response.data.error);
-      } finally {
-        this.isLoading = false;
-      }
-    },
-  },
-};
+const isFormValid = computed(() => {
+  return email.value && password.value;
+});
+
+function redirectToSignup() {
+  router.push('/signup');
+}
+
+function validateEmail(email) {
+  const re = /^[^@]+@[^.]+\.[cC][oO][mM]$/;
+  return re.test(email);
+}
+
+
+async function submitForm() {
+  if (isLoading.value) return;
+
+  if (!validateEmail(email.value)) {
+    isLoading.value = false;
+    toastNotification("Invalid email address. The format should be 'example@example.com'");
+    return;
+  }
+
+  try {
+    isLoading.value = true;
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const response = await userLogin({
+      email: email.value,
+      password: password.value,
+    });
+    if (response.data) {
+      isLoading.value = false;
+      
+      router.push('/weather');
+    } else {
+      isLoading.value = false;
+      toastNotification('Login failed');
+    }
+  } catch (err) {
+    isLoading.value = false;
+    toastNotification(err.response.data.error);
+  } finally {
+    isLoading.value = false;
+  }
+}
 </script>
+

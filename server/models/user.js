@@ -11,51 +11,51 @@ async function hashPassword(user) {
   user.password = hashedPassword;
 }
 
-module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define(
-    "User",
-    {
-      firstName: {
-        type: DataTypes.STRING,
-        allowNull: false,
+  module.exports = (sequelize, DataTypes) => {
+    const User = sequelize.define(
+      "User",
+      {
+        firstName: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        lastName: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        email: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          unique: true,
+        },
+        password: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        role: {
+          type: DataTypes.ENUM("admin", "user"),
+          defaultValue: "user",
+        },
       },
-      lastName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      role: {
-        type: DataTypes.ENUM("admin", "user"),
-        defaultValue: "user",
-      },
-    },
 
-    {
-      tableName: "Users",
-      hooks: {
-        beforeCreate: hashPassword,
-        beforeUpdate: hashPassword,
-      },
-      defaultScope: {
-        attributes: {
-          exclude: ["password"],
+      {
+        tableName: "Users",
+        hooks: {
+          beforeCreate: hashPassword,
+          beforeUpdate: hashPassword,
+        },
+        defaultScope: {
+          attributes: {
+            exclude: ["password"],
+          },
+        },
+        scopes: {
+          withPassword: {
+            attributes: {},
+          },
         },
       },
-      scopes: {
-        withPassword: {
-          attributes: {},
-        },
-      },
-    },
-  );
+    );
 
   User.prototype.comparePassword = function (password) {
     return bcrypt.compare(password, this.password);
