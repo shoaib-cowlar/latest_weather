@@ -40,7 +40,7 @@ services:
     depends_on:
       - server
     environment:
-      VUE_APP_BASE_URL: server
+      VUE_APP_BASE_URL: http://localhost:5000
     env_file:
       - ./env/client.env
 
