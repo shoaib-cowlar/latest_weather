@@ -9,8 +9,9 @@ const {
   updateUser,
   getUsersByRole,
 } = require("../controllers/userController");
+const { validateRegistration } = require("../middleware/validateUser");
 
-router.post("/register", createUser);
+router.post("/register", validateRegistration, createUser);
 router.get("/", getAllUsers);
 router.route("/:id").get(getUserById).delete(deleteUser).put(updateUser);
 router.get('/users', getUsersByRole);

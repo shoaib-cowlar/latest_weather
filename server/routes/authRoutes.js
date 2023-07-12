@@ -2,18 +2,25 @@ const express = require("express");
 const router = express.Router();
 
 const {
-loginUser, signupUser, refreshAccessToken, logout,
+  loginUser,
+  signupUser,
+  refreshAccessToken,
+  logout,
 } = require("../controllers/authController");
-const { validateLogin, validateRegistration } = require("../middleware/validateUser");
-const { refreshTokenBodyValidation } = require("../middleware/validateRefreshToken");
+const {
+  validateLogin,
+  validateRegistration,
+} = require("../middleware/validateUser");
+const {
+  refreshTokenBodyValidation,
+} = require("../middleware/validateRefreshToken");
 
-router.post("/login", validateLogin ,loginUser);
+router.post("/login", validateLogin, loginUser);
 
-router.post("/signup", validateRegistration ,signupUser);
+router.post("/signup", validateRegistration, signupUser);
 
+router.post("/refresh-token", refreshTokenBodyValidation, refreshAccessToken);
 
-router.post('/refresh-token', refreshTokenBodyValidation, refreshAccessToken);
-
-router.post('/logout', logout);
+router.post("/logout", logout);
 
 module.exports = router;

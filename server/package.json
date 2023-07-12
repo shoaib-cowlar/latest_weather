@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start":"sequelize-cli db:migrate && nodemon server",
+    "start": "sequelize-cli db:migrate && nodemon server",
     "migrate": "sequelize-cli db:migrate",
     "dev": "nodemon server",
     "test": "sequelize-cli db:migrate && jest",
@@ -45,7 +45,6 @@
     }
   },
   "devDependencies": {
-    
     "@babel/preset-env": "^7.21.5",
     "@babel/register": "^7.21.0",
     "eslint": "^8.44.0",

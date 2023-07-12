@@ -20,12 +20,12 @@ const influx = {
 
 // MQTT CredentialsProvider
 const mqttOptions = {
-    host: process.env.MQTT_HOST,
-    port: process.env.MQTT_PORT,
-    username: process.env.MQTT_USER,
-    password: process.env.MQTT_PASS,
-    clientId: "emqx_nodejs_" + Math.random().toString(16).substring(2, 8),
-    ssl: process.env.MQTT_SSL,
-  };
+  host: process.env.MQTT_HOST,
+  port: process.env.MQTT_PORT,
+  username: process.env.MQTT_USER,
+  password: process.env.MQTT_PASS,
+  clientId: "emqx_nodejs_" + Math.random().toString(16).substring(2, 8),
+  ssl: process.env.MQTT_SSL,
+};
 
-module.exports = { influx, jwtCredentials, port, mqttOptions,weatherApi }; 
+module.exports = { influx, jwtCredentials, port, mqttOptions, weatherApi };

@@ -1,4 +1,3 @@
-
 exports.getAdmin = async (req, res) => {
   try {
     res.status(200).json("ACCESSED TO ADMIN ROUTE");

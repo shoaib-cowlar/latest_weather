@@ -1,6 +1,6 @@
 const { influx } = require("../config");
 
-const {bucket} = influx;
+const { bucket } = influx;
 
 exports.query = `
     from(bucket: "${bucket}")

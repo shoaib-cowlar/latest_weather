@@ -1,5 +1,4 @@
 const { User } = require("../models");
-const { verifyRefreshToken, generateAccessToken } = require("./tokenServices");
 
 const signupUser = async (firstName, lastName, email, password) => {
   const user = await User.create({
@@ -8,7 +7,12 @@ const signupUser = async (firstName, lastName, email, password) => {
     email,
     password,
   });
-  return ({firstName:user.firstName, lastName:user.lastName, email:user.email, id:user.id});
+  return {
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    id: user.id,
+  };
 };
 
 const loginUser = async (email, password) => {
@@ -22,8 +26,6 @@ const loginUser = async (email, password) => {
   }
   return user;
 };
-
-
 
 module.exports = {
   loginUser,

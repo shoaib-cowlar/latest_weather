@@ -11,9 +11,8 @@ const privateRoutes = require("./routes/privateRoutes");
 const fetchWeatherAndPublish = require("./weatherStation");
 const { connectMqttClient, subscribeTopic } = require("./utils/mqttConnection");
 
-const { port : PORT, weatherApi } = require("./config");
+const { port: PORT, weatherApi } = require("./config");
 const cors = require("cors");
-
 
 const app = express();
 
@@ -33,7 +32,7 @@ app.use("/api/weather", weatherRoutes);
 app.use("/api/private", privateRoutes);
 
 app.listen(port, () => {
-  console.log(`Server is listening on ${port}`)
+  console.log(`Server is listening on ${port}`);
   connectMqttClient();
   subscribeTopic(topic, 0);
   // Publish Weather at regular intervals (e.g., every 1 hour)

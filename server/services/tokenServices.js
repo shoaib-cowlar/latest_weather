@@ -1,7 +1,12 @@
 // services/tokenService.js
-const jwt = require('jsonwebtoken');
-const { TOKEN_SECRET, REFRESH_TOKEN_SECRET, ACCESS_TOKEN_EXPIRY, REFRESH_TOKEN_EXPIRY } = require('../config/tokens');
-const { Token, User } = require('../models');
+const jwt = require("jsonwebtoken");
+const {
+  TOKEN_SECRET,
+  REFRESH_TOKEN_SECRET,
+  ACCESS_TOKEN_EXPIRY,
+  REFRESH_TOKEN_EXPIRY,
+} = require("../config/tokens");
+const { Token, User } = require("../models");
 
 // Generate an access token
 function generateAccessToken(user) {
@@ -20,14 +25,16 @@ async function generateRefreshToken(user) {
     // Add additional user data to the payload if needed
   };
 
-  const refreshToken = jwt.sign(payload, REFRESH_TOKEN_SECRET, { expiresIn: REFRESH_TOKEN_EXPIRY });
+  const refreshToken = jwt.sign(payload, REFRESH_TOKEN_SECRET, {
+    expiresIn: REFRESH_TOKEN_EXPIRY,
+  });
   const expiresAt = new Date();
-  expiresAt.setDate(expiresAt.getDate() + 7)
+  expiresAt.setDate(expiresAt.getDate() + 7);
   await Token.create({
     userId: user.id,
     token: refreshToken,
-    type: 'refresh',
-    expiresAt: expiresAt
+    type: "refresh",
+    expiresAt: expiresAt,
   });
   return refreshToken;
 }
@@ -48,10 +55,15 @@ async function verifyRefreshToken(token) {
   const user = await User.findByPk(decodedToken.userId);
 
   if (!user) {
-    throw new Error('Invalid refresh token');
+    throw new Error("Invalid refresh token");
   }
 
   return user;
 }
 
-module.exports = { generateAccessToken, generateRefreshToken, verifyAccessToken, verifyRefreshToken };
+module.exports = {
+  generateAccessToken,
+  generateRefreshToken,
+  verifyAccessToken,
+  verifyRefreshToken,
+};

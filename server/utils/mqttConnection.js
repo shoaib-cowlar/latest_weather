@@ -3,10 +3,8 @@ const {
   storeWeatherData,
   queryLatestWeatherData,
 } = require("../helpers/influxdb");
-const {mqttOptions} = require('../config');
+const { mqttOptions } = require("../config");
 const mqttTopic = require("./mqttTopics");
-
-
 
 // MQTT client instance
 let client;
@@ -24,9 +22,9 @@ const subscribeTopic = (topic, qos) => {
 
 // Connect to MQTT broker and handle events
 const connectMqttClient = () => {
-  const address = `${mqttOptions.ssl ? "mqtt" : "mqtt"}://${
-    mqttOptions.host
-  }:${mqttOptions.port}/${mqttOptions.endpoint}`;
+  const address = `${mqttOptions.ssl ? "mqtt" : "mqtt"}://${mqttOptions.host}:${
+    mqttOptions.port
+  }/${mqttOptions.endpoint}`;
   console.log(`Connecting to MQTT broker on ${address}`);
   client = mqtt.connect(address, mqttOptions);
 
@@ -74,7 +72,7 @@ const publishWeatherData = (topic, data) => {
       if (error) {
         console.log("Failed to publish weather data:", error);
       } else {
-        console.log("Weather data published successfully" ,payload);
+        console.log("Weather data published successfully", payload);
       }
     });
   }

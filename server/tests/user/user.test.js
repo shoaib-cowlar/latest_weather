@@ -33,7 +33,9 @@ describe("User Module Tests", () => {
 
   describe("POST /register", () => {
     it("should register a new user", async () => {
-      const response = await request(app).post("/api/user/register").send(mockUser);
+      const response = await request(app)
+        .post("/api/user/register")
+        .send(mockUser);
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty("id");
       expect(response.body.firstName).toBe(mockUser.firstName);
@@ -43,7 +45,9 @@ describe("User Module Tests", () => {
     });
 
     it("should return an error for duplicate email", async () => {
-      const response = await request(app).post("/api/user/register").send(mockUser);
+      const response = await request(app)
+        .post("/api/user/register")
+        .send(mockUser);
 
       expect(response.status).toBe(400);
       expect(response.body.error).toBe("Email is already in use");
