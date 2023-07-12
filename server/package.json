@@ -7,7 +7,7 @@
     "start":"sequelize-cli db:migrate && nodemon server",
     "migrate": "sequelize-cli db:migrate",
     "dev": "nodemon server",
-    "test": "jest",
+    "test": "sequelize-cli db:migrate && jest",
     "lint": "eslint .",
     "lint:fix": "prettier --write . eslint --ignore-path .gitignore . --fix",
     "format": "prettier --write ."

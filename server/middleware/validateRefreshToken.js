@@ -1,8 +1,16 @@
-const refreshTokenBodyValidation = (body) => {
+const Joi = require("joi");
+
+const refreshTokenBodyValidation = (req,res,next) => {
     const schema = Joi.object({
         refreshToken: Joi.string().required().label("Refresh Token"),
     });
-    return schema.validate(body);
+
+    const { error } = schema.validate(req.body);
+    if (error) {
+      res.status(400).json({ error: error.details[0].message });
+    } else {
+      next();
+    }
 };
 
 

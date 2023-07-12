@@ -14,14 +14,14 @@ describe('User Registration and Login', () => {
       .send({
         firstName: 'John',
         lastName: 'Doe',
-        email: 'johndoe@example.com',
+        email: 'johndoe99@example.com',
         password: 'password123',
       })
       .expect(201);
 
     expect(response.body).toHaveProperty('user');
     expect(response.body.user).toHaveProperty('id');
-    expect(response.body.user.email).toBe('johndoe@example.com');
+    expect(response.body.user.email).toBe('johndoe99@example.com');
   });
 
   // User login test case
@@ -29,7 +29,7 @@ describe('User Registration and Login', () => {
     const response = await request(app)
       .post('/api/auth/login')
       .send({
-        email: 'johndoe@example.com',
+        email: 'johndoe99@example.com',
         password: 'password123',
       })
       .expect(200);
@@ -46,6 +46,6 @@ describe('User Registration and Login', () => {
       .expect(200);
 
     expect(response.body).toHaveProperty('id');
-    expect(response.body.email).toBe('johndoe@example.com');
+    expect(response.body.email).toBe('johndoe99@example.com');
   });
 });
