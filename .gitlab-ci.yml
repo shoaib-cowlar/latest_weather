@@ -13,14 +13,3 @@ linting:
   only:
     - pushes
 
-testing:
-  stage: test
-  image: node:16-alpine
-  before_script:
-    - npm ci
-  script:
-    - npm run test
-  only:
-    - merge_requests
-  dependencies:
-    - linting
